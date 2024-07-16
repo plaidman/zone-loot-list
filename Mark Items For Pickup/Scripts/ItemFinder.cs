@@ -8,6 +8,9 @@ namespace XRL.World.Parts {
 	public class Plaidman_ItemPickup_ItemFinderPart : IPlayerPart {
 		public static readonly string ItemListCommand = "Plaidman_ItemPickup_ShowItemList";
 		public static readonly string ItemListUninstall = "Plaidman_ItemPickup_Uninstall";
+		public static readonly string TrashOption = "Plaidman_ItemPickup_Option_Trash";
+		public static readonly string CorpsesOption = "Plaidman_ItemPickup_Option_Corpses";
+		public static readonly string ValuesOption = "Plaidman_ItemPickup_Option_Value";
 
 		public override bool WantEvent(int id, int cascade) {
 			return base.WantEvent(id, cascade)
@@ -27,7 +30,8 @@ namespace XRL.World.Parts {
 		}
 
 		private void UninstallParts() {
-			Popup.Show("not implemented yet");
+			Messages.MessageQueue.AddPlayerMessage("not implemented yet");
+			Messages.MessageQueue.AddPlayerMessage("value option: " + Options.GetOption(ValuesOption));
 		}
 		
 		private void ListItems() {
@@ -35,6 +39,10 @@ namespace XRL.World.Parts {
 				(GameObject go) => {
 					var autogetByDefault = go.ShouldAutoget()
 						&& !go.HasPart<Plaidman_ItemPickup_AutoGetPart>();
+					var isCorpse = go.GetInventoryCategory() == "Corpses"
+						&& Options.GetOption(CorpsesOption) != "Yes";
+					var isTrash = go.DisplayName == "trash"
+						&& Options.GetOption(TrashOption) != "Yes";
 
 					return go.Physics.Takeable
 						&& go.Physics.CurrentCell.IsExplored()
@@ -42,21 +50,19 @@ namespace XRL.World.Parts {
 						&& !go.HasPropertyOrTag("NoAutoget")
 						&& !autogetByDefault
 						&& !go.IsOwned()
-						&& go.GetInventoryCategory() != "Corpses"
-						&& go.DisplayName != "trash";
+						&& !isCorpse
+						&& !isTrash;
 				}
 			);
 			
 			// TODOs
 			// options:
 			//   - list item's $/#
-			//   - show/hide trash
-			//   - show/hide corpses
 			// keybinds
 			//   - uninstall
 			// add icons for the ability and popup
-			// button to travel directly to an item (for armed mines?)
 			// test to see how these behave with mineshell - spawn a mine layer mk 1? or something like that
+			// button to travel directly to an item (for armed mines?)
 			// better title for mod
 			// ensure manifest.json has the right labels
 
