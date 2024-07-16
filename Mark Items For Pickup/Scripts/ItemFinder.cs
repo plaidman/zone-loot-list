@@ -3,6 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using XRL.UI;
 
+// TODOs
+// keybinds
+//   - uninstall
+// add icons for the ability and popup
+// button to travel directly to an item (for armed mines?)
+// different title for mod
+// ensure manifest.json has the right labels
+// AutoGetItem listens for zone change and removes itself
+//
+// TESTS
+// test to see how these behave with mineshell - spawn a mine layer mk 1? or something like that
+// items are listed in stacks, try to separate them
+
 namespace XRL.World.Parts {
 	[Serializable]
 	public class Plaidman_ItemPickup_ItemFinderPart : IPlayerPart {
@@ -35,37 +48,8 @@ namespace XRL.World.Parts {
 		}
 		
 		private void ListItems() {
-			List<GameObject> gettableItems = ParentObject.CurrentZone.GetObjects(
-				(GameObject go) => {
-					var autogetByDefault = go.ShouldAutoget()
-						&& !go.HasPart<Plaidman_ItemPickup_AutoGetPart>();
-					var isCorpse = go.GetInventoryCategory() == "Corpses"
-						&& Options.GetOption(CorpsesOption) != "Yes";
-					var isTrash = go.DisplayName == "trash"
-						&& Options.GetOption(TrashOption) != "Yes";
-
-					return go.Physics.Takeable
-						&& go.Physics.CurrentCell.IsExplored()
-						&& !go.HasPropertyOrTag("DroppedByPlayer")
-						&& !go.HasPropertyOrTag("NoAutoget")
-						&& !autogetByDefault
-						&& !go.IsOwned()
-						&& !isCorpse
-						&& !isTrash;
-				}
-			);
+			List<GameObject> gettableItems = ParentObject.CurrentZone.GetObjects(FilterOptions);
 			
-			// TODOs
-			// options:
-			//   - list item's $/#
-			// keybinds
-			//   - uninstall
-			// add icons for the ability and popup
-			// test to see how these behave with mineshell - spawn a mine layer mk 1? or something like that
-			// button to travel directly to an item (for armed mines?)
-			// better title for mod
-			// ensure manifest.json has the right labels
-
 			if (gettableItems.Count == 0) {
 				Popup.Show("There are no gettable items in the zone that you have seen.");
 				return;
@@ -79,8 +63,8 @@ namespace XRL.World.Parts {
 			}
 
 			var toggledItemsEnumerator = Plaidman.ItemPickup.Menus.ItemList_Popup.ShowPopup(
-				options: gettableItems.Select(o => o.DisplayName).ToArray(),
-				icons: gettableItems.Select(o => o.Render).ToArray(),
+				options: gettableItems.Select(go => GetOptionLabel(go)).ToArray(),
+				icons: gettableItems.Select(go => go.Render).ToArray(),
 				initialSelections: initialSelections.ToArray()
 			);
 
@@ -93,6 +77,51 @@ namespace XRL.World.Parts {
 					item.RemovePart<Plaidman_ItemPickup_AutoGetPart>();
 				}
 			}
+		}
+
+		private string GetOptionLabel(GameObject go) {
+			var label = go.GetDisplayName();
+
+			if (Options.GetOption(ValuesOption) == "No") {
+				return label;
+			}
+			
+			if (go.GetWeight() <= 0.0) {
+				return label += "   [{{c|$}}]";
+			}
+			
+			var value = go.Value / go.GetWeight();
+			if (value < 4) {
+				return label += "   [{{r|$}}]";
+			}
+
+			if (value < 10) {
+				return label += "   [{{g|$}}]";
+			}
+
+			if (value < 25) {
+				return label += "   [{{g|$$}}]";
+			}
+
+			return label += "   [{{g|$$$}}]";
+		} 
+		
+		private bool FilterOptions(GameObject go) {
+			var autogetByDefault = go.ShouldAutoget()
+				&& !go.HasPart<Plaidman_ItemPickup_AutoGetPart>();
+			var isCorpse = go.GetInventoryCategory() == "Corpses"
+				&& Options.GetOption(CorpsesOption) != "Yes";
+			var isTrash = go.DisplayName == "trash"
+				&& Options.GetOption(TrashOption) != "Yes";
+
+			return go.Physics.Takeable
+				&& go.Physics.CurrentCell.IsExplored()
+				&& !go.HasPropertyOrTag("DroppedByPlayer")
+				&& !go.HasPropertyOrTag("NoAutoget")
+				&& !go.IsOwned()
+				&& !autogetByDefault
+				&& !isCorpse
+				&& !isTrash;
 		}
 	}
 }
