@@ -43,19 +43,27 @@ namespace XRL.World.Parts {
 		}
 
 		private void UninstallParts() {
-			Messages.MessageQueue.AddPlayerMessage("not implemented yet");
-			Messages.MessageQueue.AddPlayerMessage("value option: " + Options.GetOption(ValuesOption));
+			var items = ParentObject.CurrentZone.GetObjectsWithPart("Plaidman_ItemPickup_AutoGetPart");
+			Messages.MessageQueue.AddPlayerMessage("Uninstall: removing " + items.Count + " item parts");
+			foreach (var item in items) {
+				item.RemovePart<Plaidman_ItemPickup_AutoGetPart>();
+			}
+
+			Messages.MessageQueue.AddPlayerMessage("Uninstall: removing player part");
+			ParentObject.RemovePart<Plaidman_ItemPickup_ItemFinderPart>();
+			
+			Popup.Show("Uninstall: Finished removing mod. Save your game, then you can remove this mod.");
 		}
 		
 		private void ListItems() {
-			List<GameObject> gettableItems = ParentObject.CurrentZone.GetObjects(FilterOptions);
+			var gettableItems = ParentObject.CurrentZone.GetObjects(FilterOptions);
 			
 			if (gettableItems.Count == 0) {
 				Popup.Show("There are no gettable items in the zone that you have seen.");
 				return;
 			}
 
-			List<int> initialSelections = new();
+			var initialSelections = new List<int>();
 			for (int i = 0; i < gettableItems.Count; i++) {
 				if (gettableItems[i].HasPart<Plaidman_ItemPickup_AutoGetPart>()) {
 					initialSelections.Add(i);
