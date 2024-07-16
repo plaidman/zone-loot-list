@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<activatedabilities>
-	<ability Command="PM_ItemPickup_ShowItemList">
-		<description>
-			<p>Show pickable items on the ground.</p>
-		</description>
-	</ability>
-</activatedabilities>

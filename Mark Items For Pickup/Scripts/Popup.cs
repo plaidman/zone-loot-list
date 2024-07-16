@@ -1,24 +1,19 @@
-/// Custom menus that are copied and modified directly from disassembled Qud code.
-///
-/// The function(s)/method(s) in this file are intended to be temporary, with the idea in mind that they may or may not be
-/// eclipsed by a new developer implementation at some point.
+using System.Collections.Generic;
+using System.Linq;
+using XRL.UI;
+using Qud.UI;
+using ConsoleLib.Console;
 
-namespace PM.ItemPickup.Menus {
-	using System.Collections.Generic;
-	using System.Linq;
-	using XRL.UI;
-	using Qud.UI;
-    using ConsoleLib.Console;
-
-    public class ItemList_Popup {
+namespace Plaidman.ItemPickup.Menus {
+	public class ItemList_Popup {
 		public class ToggledItem {
+			public int Index { get; }
+			public bool Value { get; }
+
 			public ToggledItem(int index, bool value) {
 				Index = index;
 				Value = value;
 			}
-
-			public int Index { get; }
-			public bool Value { get; }
 		}
 
 		public static IEnumerable<ToggledItem> ShowPopup(

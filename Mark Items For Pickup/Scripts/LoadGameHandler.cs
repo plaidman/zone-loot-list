@@ -2,7 +2,7 @@
 using XRL.World;
 using XRL.World.Parts;
 
-namespace Ava.ShoppingList.Scripts
+namespace Plaidman.ItemPickup.Scripts
 {
 	[HasCallAfterGameLoaded]
 	public class LoadGameHandler

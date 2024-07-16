@@ -6,31 +6,28 @@ using XRL.UI;
 namespace XRL.World.Parts {
 	[Serializable]
 	public class Plaidman_ItemPickup_ItemFinderPart : IPlayerPart {
-		public static readonly string ItemListCommand = "PM_ItemPickup_ShowItemList";
-		public Guid ActivatedAbility;
+		public static readonly string ItemListCommand = "Plaidman_ItemPickup_ShowItemList";
+		public static readonly string ItemListUninstall = "Plaidman_ItemPickup_Uninstall";
 
-		public override void Attach() {
-			if (ActivatedAbility == Guid.Empty)
-				ActivatedAbility = ParentObject.AddActivatedAbility("Show Items", ItemListCommand, "Skill", Silent: true);
-			base.Attach();
-		}
-
-		public override void Remove() {
-			RemoveMyActivatedAbility(ref ActivatedAbility, ParentObject);
-			base.Remove();
-		}
-		
 		public override bool WantEvent(int id, int cascade) {
 			return base.WantEvent(id, cascade)
 				|| id == CommandEvent.ID;
 		}
 
 		public override bool HandleEvent(CommandEvent e) {
-			if (e.Command == ItemListCommand && e.Actor == ParentObject) {
+			if (e.Command == ItemListCommand) {
 				ListItems();
 			}
 
+			if (e.Command == ItemListUninstall) {
+				UninstallParts();
+			}
+
 			return base.HandleEvent(e);
+		}
+
+		private void UninstallParts() {
+			Popup.Show("not implemented yet");
 		}
 		
 		private void ListItems() {
@@ -55,12 +52,13 @@ namespace XRL.World.Parts {
 			//   - list item's $/#
 			//   - show/hide trash
 			//   - show/hide corpses
-			//   - uninstall?
+			// keybinds
+			//   - uninstall
 			// add icons for the ability and popup
 			// button to travel directly to an item (for armed mines?)
-			// wish to uninstall the mod
-			// use a keybind instead of ability
 			// test to see how these behave with mineshell - spawn a mine layer mk 1? or something like that
+			// better title for mod
+			// ensure manifest.json has the right labels
 
 			if (gettableItems.Count == 0) {
 				Popup.Show("There are no gettable items in the zone that you have seen.");
@@ -74,13 +72,13 @@ namespace XRL.World.Parts {
 				}
 			}
 
-			var toggledItemsEnumerator = PM.ItemPickup.Menus.ItemList_Popup.ShowPopup(
+			var toggledItemsEnumerator = Plaidman.ItemPickup.Menus.ItemList_Popup.ShowPopup(
 				options: gettableItems.Select(o => o.DisplayName).ToArray(),
 				icons: gettableItems.Select(o => o.Render).ToArray(),
 				initialSelections: initialSelections.ToArray()
 			);
 
-			foreach (PM.ItemPickup.Menus.ItemList_Popup.ToggledItem result in toggledItemsEnumerator) {
+			foreach (Plaidman.ItemPickup.Menus.ItemList_Popup.ToggledItem result in toggledItemsEnumerator) {
 				var item = gettableItems[result.Index];
 
 				if (result.Value) {

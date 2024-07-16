@@ -1,0 +1,6 @@
+<commands>
+	<command ID="Plaidman_ItemPickup_ShowItemList" DisplayText="Show Items List" Category="Mod: Mark Items For Pickup" Layer="Adventure" Auto="Down">
+		<keyboardBind Modifier="ctrl" Key="f"/>
+	</command>
+	<command ID="Plaidman_ItemPickup_Uninstall" DisplayText="Uninstall Mod" Category="Mod: Mark Items For Pickup" Layer="Adventure" Auto="Down"></command>
+</commands>
