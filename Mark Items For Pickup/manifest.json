@@ -1,0 +1,8 @@
+{
+	"id": "PM_ItemPickup",
+	"title": "Mark Items For Pickup",
+	"description": "Allows you to mark items to be picked up at the next autoexplore.",
+	"version": "1.0",
+	"author": "Plaidman",
+	"previewImage": "preview.png"
+}
