@@ -27,7 +27,17 @@ namespace XRL.World.Parts {
 
 		public override bool WantEvent(int id, int cascade) {
 			return base.WantEvent(id, cascade)
-				|| id == CommandEvent.ID;
+				|| id == CommandEvent.ID
+				|| id == EnteringZoneEvent.ID;
+		}
+
+		public override bool HandleEvent(EnteringZoneEvent e) {
+			var items = ParentObject.CurrentZone.GetObjectsWithPart("Plaidman_ItemPickup_AutoGetPart");
+			foreach (var item in items) {
+				item.RemovePart<Plaidman_ItemPickup_AutoGetPart>();
+			}
+
+			return base.HandleEvent(e);
 		}
 
 		public override bool HandleEvent(CommandEvent e) {
@@ -44,13 +54,13 @@ namespace XRL.World.Parts {
 
 		private void UninstallParts() {
 			var items = ParentObject.CurrentZone.GetObjectsWithPart("Plaidman_ItemPickup_AutoGetPart");
-			Messages.MessageQueue.AddPlayerMessage("Uninstall: removing " + items.Count + " item parts");
 			foreach (var item in items) {
 				item.RemovePart<Plaidman_ItemPickup_AutoGetPart>();
 			}
+			Messages.MessageQueue.AddPlayerMessage("Uninstall: removed item parts");
 
-			Messages.MessageQueue.AddPlayerMessage("Uninstall: removing player part");
 			ParentObject.RemovePart<Plaidman_ItemPickup_ItemFinderPart>();
+			Messages.MessageQueue.AddPlayerMessage("Uninstall: removed player part");
 			
 			Popup.Show("Uninstall: Finished removing mod. Save your game, then you can remove this mod.");
 		}

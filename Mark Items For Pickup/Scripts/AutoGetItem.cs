@@ -20,6 +20,6 @@ namespace XRL.World.Parts {
 			}
 
 			return base.HandleEvent(e);
-		} 
-	}
+		}
+    }
 }
