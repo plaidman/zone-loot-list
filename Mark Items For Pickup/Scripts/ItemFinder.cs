@@ -4,17 +4,15 @@ using System.Linq;
 using XRL.UI;
 
 // TODOs
-// keybinds
-//   - uninstall
-// add icons for the ability and popup
-// button to travel directly to an item (for armed mines?)
+// icon for mod and popup
+// button to travel directly to an item? (for player dropped items)
 // different title for mod
+//  - one man's treasure
 // ensure manifest.json has the right labels
-// AutoGetItem listens for zone change and removes itself
-//
-// TESTS
-// test to see how these behave with mineshell - spawn a mine layer mk 1? or something like that
 // items are listed in stacks, try to separate them
+// write description with caveats
+//  - dropped by player
+//  - mines
 
 namespace XRL.World.Parts {
 	[Serializable]
@@ -132,11 +130,18 @@ namespace XRL.World.Parts {
 			var isTrash = go.DisplayName == "trash"
 				&& Options.GetOption(TrashOption) != "Yes";
 
+			var armedMine = false;
+			if (go.HasPart<Tinkering_Mine>()) {
+				armedMine = go.GetPart<Tinkering_Mine>().Armed;
+			}
+
 			return go.Physics.Takeable
 				&& go.Physics.CurrentCell.IsExplored()
 				&& !go.HasPropertyOrTag("DroppedByPlayer")
 				&& !go.HasPropertyOrTag("NoAutoget")
 				&& !go.IsOwned()
+				&& !go.IsHidden
+				&& !armedMine
 				&& !autogetByDefault
 				&& !isCorpse
 				&& !isTrash;
