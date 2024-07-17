@@ -1,4 +1,5 @@
 <options>
+	<option ID="Plaidman_ItemPickup_Option_UseAbility" DisplayText="Use Activated Ability" Category="Mod: Mark Items For Pickup" Type="Checkbox" Default="No"></option>
 	<option ID="Plaidman_ItemPickup_Option_Corpses" DisplayText="Show Corpses" Category="Mod: Mark Items For Pickup" Type="Checkbox" Default="No"></option>
 	<option ID="Plaidman_ItemPickup_Option_Trash" DisplayText="Show Trash" Category="Mod: Mark Items For Pickup" Type="Checkbox" Default="No"></option>
 	<option ID="Plaidman_ItemPickup_Option_Value" DisplayText="Show Value $/#" Category="Mod: Mark Items For Pickup" Type="Checkbox" Default="No"></option>

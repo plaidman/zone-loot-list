@@ -29,11 +29,34 @@ namespace XRL.World.Parts {
 		public static readonly string TrashOption = "Plaidman_ItemPickup_Option_Trash";
 		public static readonly string CorpsesOption = "Plaidman_ItemPickup_Option_Corpses";
 		public static readonly string ValuesOption = "Plaidman_ItemPickup_Option_Value";
-
+		public static readonly string AbilityOption = "Plaidman_ItemPickup_Option_UseAbility";
+		public Guid AbilityGuid;
+		
 		public override bool WantEvent(int id, int cascade) {
 			return base.WantEvent(id, cascade)
 				|| id == CommandEvent.ID
 				|| id == EnteringZoneEvent.ID;
+		}
+		
+		public void ToggleAbility() {
+			if (Options.GetOption(AbilityOption) == "Yes") {
+				RequireAbility();
+			} else {
+				RemoveAbility();
+			}
+		}
+		
+		private void RequireAbility() {
+			if (AbilityGuid == Guid.Empty) {
+				AbilityGuid = ParentObject.AddActivatedAbility("Item List", ItemListCommand, "Skill", Silent: true);
+			}
+		}
+		
+		private void RemoveAbility() {
+			if (AbilityGuid != Guid.Empty) {
+				ParentObject.RemoveActivatedAbility(ref AbilityGuid);
+			}
+			
 		}
 
 		public override bool HandleEvent(EnteringZoneEvent e) {
