@@ -4,15 +4,22 @@ using System.Linq;
 using XRL.UI;
 
 // TODOs
+// add an option to use ability or not
 // icon for mod and popup
-// button to travel directly to an item? (for player dropped items)
 // different title for mod
 //  - one man's treasure
+//  - autoloot spoils
+//  - autoloot item list
 // ensure manifest.json has the right labels
-// items are listed in stacks, try to separate them
-// write description with caveats
-//  - dropped by player
-//  - mines
+// write description
+//  - improvements
+//  - options
+//  - keybinds
+//  - with caveats
+//    - stacked items (copper dagger x2)
+//    - dropped by player
+//    - mines
+// button to travel directly to an item? (for player dropped items)
 
 namespace XRL.World.Parts {
 	[Serializable]
@@ -102,24 +109,28 @@ namespace XRL.World.Parts {
 				return label;
 			}
 			
-			if (go.GetWeight() <= 0.0) {
+			if (go.GetWeight() <= 0.0) {  // 0 weight is cyan
 				return label += "   [{{c|$}}]";
 			}
 			
 			var value = go.Value / go.GetWeight();
-			if (value < 4) {
-				return label += "   [{{r|$}}]";
+			if (value < 1) {  // <1 is red
+				return label += "   [{{R|$}}]";
 			}
 
-			if (value < 10) {
-				return label += "   [{{g|$}}]";
+			if (value < 4) {  // 1-4 is yellow
+				return label += "   [{{W|$}}]";
 			}
 
-			if (value < 25) {
-				return label += "   [{{g|$$}}]";
+			if (value < 10) {  // 4-10 is green
+				return label += "   [{{G|$}}]";
 			}
 
-			return label += "   [{{g|$$$}}]";
+			if (value < 25) {  // 10-25 is double green
+				return label += "   [{{G|$$}}]";
+			}
+
+			return label += "   [{{G|$$$}}]";  // >25 is triple green
 		} 
 		
 		private bool FilterOptions(GameObject go) {
