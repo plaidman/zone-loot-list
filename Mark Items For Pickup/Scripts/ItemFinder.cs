@@ -4,12 +4,9 @@ using System.Linq;
 using XRL.UI;
 
 // TODOs
-// add an option to use ability or not
-// icon for mod and popup
+// preview for mod
 // different title for mod
-//  - one man's treasure
-//  - autoloot spoils
-//  - autoloot item list
+//  - zone loot list
 // ensure manifest.json has the right labels
 // write description
 //  - improvements
@@ -56,7 +53,6 @@ namespace XRL.World.Parts {
 			if (AbilityGuid != Guid.Empty) {
 				ParentObject.RemoveActivatedAbility(ref AbilityGuid);
 			}
-			
 		}
 
 		public override bool HandleEvent(EnteringZoneEvent e) {
@@ -86,6 +82,11 @@ namespace XRL.World.Parts {
 				item.RemovePart<Plaidman_ItemPickup_AutoGetPart>();
 			}
 			Messages.MessageQueue.AddPlayerMessage("Uninstall: removed item parts");
+
+			if (AbilityGuid != Guid.Empty) {
+				ParentObject.RemoveActivatedAbility(ref AbilityGuid);
+				Messages.MessageQueue.AddPlayerMessage("Uninstall: removed ability");
+			}
 
 			ParentObject.RemovePart<Plaidman_ItemPickup_ItemFinderPart>();
 			Messages.MessageQueue.AddPlayerMessage("Uninstall: removed player part");
