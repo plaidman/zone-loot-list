@@ -1,8 +1,8 @@
-﻿using XRL;
+﻿using Plaidman.ZoneLootList.Parts;
+using XRL;
 using XRL.World;
-using XRL.World.Parts;
 
-namespace Plaidman.ItemPickup.Handlers
+namespace Plaidman.ZoneLootList.Handlers
 {
 	[HasCallAfterGameLoaded]
 	public class LoadGameHandler {
@@ -10,8 +10,8 @@ namespace Plaidman.ItemPickup.Handlers
 		public static void AfterLoaded() {
 			if (The.Player == null) return;
 
-			The.Player.RequirePart<Plaidman_ItemPickup_ItemFinderPart>();
-			var part = The.Player.GetPart<Plaidman_ItemPickup_ItemFinderPart>();
+			The.Player.RequirePart<ZLL_ZoneLootFinder>();
+			var part = The.Player.GetPart<ZLL_ZoneLootFinder>();
 			part.ToggleAbility();
 		}
 	}
@@ -19,8 +19,8 @@ namespace Plaidman.ItemPickup.Handlers
 	[PlayerMutator]
 	public class NewCharacterHandler : IPlayerMutator {
 		public void mutate(GameObject player) {
-			player.RequirePart<Plaidman_ItemPickup_ItemFinderPart>();
-			var part = player.GetPart<Plaidman_ItemPickup_ItemFinderPart>();
+			player.RequirePart<ZLL_ZoneLootFinder>();
+			var part = player.GetPart<ZLL_ZoneLootFinder>();
 			part.ToggleAbility();
 		}
 	}
@@ -30,9 +30,9 @@ namespace Plaidman.ItemPickup.Handlers
 		[OptionFlagUpdate]
 		public static void FlagUpdate() {
 			if (The.Player == null) return;
-			if (!The.Player.HasPart<Plaidman_ItemPickup_ItemFinderPart>()) return;
+			if (!The.Player.HasPart<ZLL_ZoneLootFinder>()) return;
 			
-			var part = The.Player.GetPart<Plaidman_ItemPickup_ItemFinderPart>();
+			var part = The.Player.GetPart<ZLL_ZoneLootFinder>();
 			part.ToggleAbility();
 		}
 	}

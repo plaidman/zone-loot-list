@@ -1,8 +1,9 @@
 {
-	"id": "PM_ItemPickup",
-	"title": "Mark Items For Pickup",
-	"description": "Allows you to mark items to be picked up at the next autoexplore.",
+	"id": "Plaidman_ZoneLootList",
+	"title": "Zone Loot List",
+	"description": "Show a list of items in the area, then mark them for autopickup.",
 	"version": "1.0",
 	"author": "Plaidman",
+    "tags": "UI/UX, ",
 	"previewImage": "preview.png"
 }

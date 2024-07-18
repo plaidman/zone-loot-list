@@ -1,8 +1,9 @@
 using System;
+using XRL.World;
 
-namespace XRL.World.Parts {
+namespace Plaidman.ZoneLootList.Parts {
 	[Serializable]
-	public class Plaidman_ItemPickup_AutoGetPart : IPart {
+	public class ZLL_AutoGetItem : IPart {
 		public override bool WantEvent(int id, int cascade) {
 			return base.WantEvent(id, cascade)
 				|| id == AutoexploreObjectEvent.ID
@@ -16,7 +17,7 @@ namespace XRL.World.Parts {
 
 		public override bool HandleEvent(AddedToInventoryEvent e) {
 			if (e.Item.ID == ParentObject.ID) {
-				ParentObject.RemovePart<Plaidman_ItemPickup_AutoGetPart>();
+				ParentObject.RemovePart<ZLL_AutoGetItem>();
 			}
 
 			return base.HandleEvent(e);

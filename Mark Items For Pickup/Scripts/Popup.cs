@@ -4,8 +4,8 @@ using XRL.UI;
 using Qud.UI;
 using ConsoleLib.Console;
 
-namespace Plaidman.ItemPickup.Menus {
-	public class ItemList_Popup {
+namespace Plaidman.ZoneLootList.Menus {
+	public class ItemList {
 		public class ToggledItem {
 			public int Index { get; }
 			public bool Value { get; }
@@ -41,8 +41,8 @@ namespace Plaidman.ItemPickup.Menus {
 				}
 
 				int selectedIndex = Popup.PickOption(
-					Title: "Zone Items",
-					Intro: "Mark items here, then autoexplore to pick up.",
+					Title: "Zone Loot",
+					Intro: "Mark items here, then autoexplore to pick them up.",
 					IntroIcon: null,
 					Options: itemLabels,
 					RespectOptionNewlines: false,
@@ -57,7 +57,7 @@ namespace Plaidman.ItemPickup.Menus {
 						yield break;
 
 					case -3:  // Tab
-						var tempList = new List<int>(selectedItems);  // Temporary copy for reference in yielding only changed options
+						var tempList = new List<int>(selectedItems);
 						if (selectedItems.Count < numOptions) {
 							selectedItems.Clear();
 							selectedItems.AddRange(Enumerable.Range(0, itemLabels.Length));
