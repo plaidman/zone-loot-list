@@ -6,7 +6,6 @@ using XRL.World;
 using XRL.World.Parts;
 
 // TODOs
-// preview for mod
 // write description
 //  - improvements
 //  - options
@@ -16,6 +15,7 @@ using XRL.World.Parts;
 //    - dropped by player
 //    - mines
 //  - thanks
+// readme for github repo
 // button to travel directly to an item? (for player dropped items)
 
 namespace Plaidman.ZoneLootList.Parts {
@@ -28,8 +28,8 @@ namespace Plaidman.ZoneLootList.Parts {
 		public static readonly string ValuesOption = "Plaidman_ZoneLootList_Option_Value";
 		public static readonly string AbilityOption = "Plaidman_ZoneLootList_Option_UseAbility";
 		public Guid AbilityGuid;
-		
-		public override bool WantEvent(int id, int cascade) {
+
+        public override bool WantEvent(int id, int cascade) {
 			return base.WantEvent(id, cascade)
 				|| id == CommandEvent.ID
 				|| id == EnteringZoneEvent.ID;
