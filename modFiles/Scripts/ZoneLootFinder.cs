@@ -77,21 +77,26 @@ namespace Plaidman.ZoneLootList.Parts {
 		}
 
 		private void UninstallParts() {
+			if (Popup.ShowYesNo("Are you sure you want to uninstall {{W|Zone Loot List}}?") == DialogResult.No) {
+				XRL.Messages.MessageQueue.AddPlayerMessage("{{W|Zone Loot List}} was not uninstalled.");
+				return;
+			}
+
 			var items = ParentObject.CurrentZone.GetObjectsWithPart("ZLL_AutoGetItem");
 			foreach (var item in items) {
 				item.RemovePart<ZLL_AutoGetItem>();
 			}
-			XRL.Messages.MessageQueue.AddPlayerMessage("Uninstall: removed item parts");
+			XRL.Messages.MessageQueue.AddPlayerMessage("{{W|Zone Loot List}}: removed item parts");
 
 			if (AbilityGuid != Guid.Empty) {
 				ParentObject.RemoveActivatedAbility(ref AbilityGuid);
-				XRL.Messages.MessageQueue.AddPlayerMessage("Uninstall: removed ability");
+				XRL.Messages.MessageQueue.AddPlayerMessage("{{W|Zone Loot List}}: removed ability");
 			}
 
 			ParentObject.RemovePart<ZLL_ZoneLootFinder>();
-			XRL.Messages.MessageQueue.AddPlayerMessage("Uninstall: removed player part");
+			XRL.Messages.MessageQueue.AddPlayerMessage("{{W|Zone Loot List}}: removed player part");
 			
-			Popup.Show("Uninstall: Finished removing mod. Save your game, then you can remove this mod.");
+			Popup.Show("Finished removing {{W|Zone Loot List}}. Please save and quit, then you can remove this mod.");
 		}
 		
 		private void ListItems() {
