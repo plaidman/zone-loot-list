@@ -5,19 +5,6 @@ using XRL.UI;
 using XRL.World;
 using XRL.World.Parts;
 
-// TODOs
-// write description
-//  - improvements
-//  - options
-//  - keybinds
-//  - with caveats
-//    - stacked items (copper dagger x2)
-//    - dropped by player
-//    - mines
-//  - thanks
-// readme for github repo
-// button to travel directly to an item? (for player dropped items)
-
 namespace Plaidman.ZoneLootList.Parts {
 	[Serializable]
 	public class ZLL_ZoneLootFinder : IPlayerPart {
@@ -167,7 +154,7 @@ namespace Plaidman.ZoneLootList.Parts {
 				&& !go.HasPart<ZLL_AutoGetItem>();
 			var isCorpse = go.GetInventoryCategory() == "Corpses"
 				&& Options.GetOption(CorpsesOption) != "Yes";
-			var isTrash = go.DisplayName == "trash"
+			var isTrash = go.HasPart<Garbage>()
 				&& Options.GetOption(TrashOption) != "Yes";
 
 			var armedMine = false;
