@@ -41,7 +41,7 @@ namespace Plaidman.ZoneLootList.Menus {
 				}
 
 				int selectedIndex = Popup.PickOption(
-					Title: "Zone Loot",
+					Title: "Lootable Items",
 					Intro: "Mark items here, then autoexplore to pick them up.",
 					IntroIcon: null,
 					Options: itemLabels,

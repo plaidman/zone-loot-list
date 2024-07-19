@@ -1,6 +1,7 @@
 using System;
 using XRL.World;
 
+// todo: change this to XRL.World.Parts when this mod is broken by qud changes
 namespace Plaidman.ZoneLootList.Parts {
 	[Serializable]
 	public class ZLL_AutoGetItem : IPart {

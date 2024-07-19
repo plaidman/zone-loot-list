@@ -5,6 +5,7 @@ using XRL.UI;
 using XRL.World;
 using XRL.World.Parts;
 
+// todo: change this to XRL.World.Parts when this mod is broken by qud changes
 namespace Plaidman.ZoneLootList.Parts {
 	[Serializable]
 	public class ZLL_ZoneLootFinder : IPlayerPart {
@@ -19,9 +20,10 @@ namespace Plaidman.ZoneLootList.Parts {
         public override bool WantEvent(int id, int cascade) {
 			return base.WantEvent(id, cascade)
 				|| id == CommandEvent.ID
-				|| id == EnteringZoneEvent.ID;
+				|| id == EnteringZoneEvent.ID
+				|| id == AfterPlayerBodyChangeEvent.ID;
 		}
-		
+
 		public void ToggleAbility() {
 			if (Options.GetOption(AbilityOption) == "Yes") {
 				RequireAbility();
@@ -29,19 +31,28 @@ namespace Plaidman.ZoneLootList.Parts {
 				RemoveAbility();
 			}
 		}
-		
+
 		private void RequireAbility() {
 			if (AbilityGuid == Guid.Empty) {
 				AbilityGuid = ParentObject.AddActivatedAbility("Item List", ItemListCommand, "Skill", Silent: true);
 			}
 		}
-		
+	
 		private void RemoveAbility() {
 			if (AbilityGuid != Guid.Empty) {
 				ParentObject.RemoveActivatedAbility(ref AbilityGuid);
 			}
 		}
 
+		public override bool HandleEvent(AfterPlayerBodyChangeEvent e) {
+            e.NewBody?.RequirePart<ZLL_ZoneLootFinder>();
+            e.OldBody?.RemovePart<ZLL_ZoneLootFinder>();
+
+			var part = e.NewBody.GetPart<ZLL_ZoneLootFinder>();
+			part.ToggleAbility();
+            return base.HandleEvent(e);
+        }
+	
 		public override bool HandleEvent(EnteringZoneEvent e) {
 			var items = ParentObject.CurrentZone.GetObjectsWithPart("ZLL_AutoGetItem");
 			foreach (var item in items) {
@@ -65,7 +76,7 @@ namespace Plaidman.ZoneLootList.Parts {
 
 		private void UninstallParts() {
 			if (Popup.ShowYesNo("Are you sure you want to uninstall {{W|Zone Loot List}}?") == DialogResult.No) {
-				XRL.Messages.MessageQueue.AddPlayerMessage("{{W|Zone Loot List}} was not uninstalled.");
+				XRL.Messages.MessageQueue.AddPlayerMessage("{{W|Zone Loot List}} uninstall was cancelled.");
 				return;
 			}
 
@@ -90,7 +101,7 @@ namespace Plaidman.ZoneLootList.Parts {
 			var gettableItems = ParentObject.CurrentZone.GetObjects(FilterOptions);
 			
 			if (gettableItems.Count == 0) {
-				Popup.Show("There are no gettable items in the zone that you have seen.");
+				Popup.Show("You haven't seen any new loot in this area.");
 				return;
 			}
 
