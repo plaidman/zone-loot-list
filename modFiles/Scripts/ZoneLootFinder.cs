@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Plaidman.ZoneLootList.Events;
 using XRL;
 using XRL.UI;
 using XRL.World;
@@ -71,10 +72,7 @@ namespace Plaidman.ZoneLootList.Parts {
 				return;
 			}
 
-			var items = ParentObject.CurrentZone.GetObjectsWithPart("ZLL_AutoGetItem");
-			foreach (var item in items) {
-				item.RemovePart<ZLL_AutoGetItem>();
-			}
+			The.Game.HandleEvent(new ZLL_UninstallEvent());
 			XRL.Messages.MessageQueue.AddPlayerMessage("{{W|Zone Loot List}}: removed item parts");
 
 			if (AbilityGuid != Guid.Empty) {
