@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using XRL;
 using XRL.UI;
 using XRL.World;
 using XRL.World.Parts;
@@ -17,12 +18,11 @@ namespace Plaidman.ZoneLootList.Parts {
 		public static readonly string AbilityOption = "Plaidman_ZoneLootList_Option_UseAbility";
 		public Guid AbilityGuid;
 
-        public override bool WantEvent(int id, int cascade) {
-			return base.WantEvent(id, cascade)
-				|| id == CommandEvent.ID
-				|| id == EnteringZoneEvent.ID
-				|| id == AfterPlayerBodyChangeEvent.ID;
-		}
+        public override void Register(GameObject go, IEventRegistrar registrar) {
+			registrar.Register(CommandEvent.ID);
+			registrar.Register(AfterPlayerBodyChangeEvent.ID);
+            base.Register(go, registrar);
+        }
 
 		public void ToggleAbility() {
 			if (Options.GetOption(AbilityOption) == "Yes") {
@@ -53,15 +53,6 @@ namespace Plaidman.ZoneLootList.Parts {
             return base.HandleEvent(e);
         }
 	
-		public override bool HandleEvent(EnteringZoneEvent e) {
-			var items = ParentObject.CurrentZone.GetObjectsWithPart("ZLL_AutoGetItem");
-			foreach (var item in items) {
-				item.RemovePart<ZLL_AutoGetItem>();
-			}
-
-			return base.HandleEvent(e);
-		}
-
 		public override bool HandleEvent(CommandEvent e) {
 			if (e.Command == ItemListCommand) {
 				ListItems();
