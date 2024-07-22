@@ -12,7 +12,7 @@ namespace Plaidman.ZoneLootList.Parts {
 	[Serializable]
 	public class ZLL_ZoneLootFinder : IPlayerPart {
 		public static readonly string ItemListCommand = "Plaidman_ZoneLootList_Command_ShowItemList";
-		public static readonly string ItemListUninstall = "Plaidman_ZoneLootList_Command_Uninstall";
+		public static readonly string UninstallCommand = "Plaidman_ZoneLootList_Command_Uninstall";
 		public static readonly string TrashOption = "Plaidman_ZoneLootList_Option_Trash";
 		public static readonly string CorpsesOption = "Plaidman_ZoneLootList_Option_Corpses";
 		public static readonly string ValuesOption = "Plaidman_ZoneLootList_Option_Value";
@@ -59,7 +59,7 @@ namespace Plaidman.ZoneLootList.Parts {
 				ListItems();
 			}
 
-			if (e.Command == ItemListUninstall) {
+			if (e.Command == UninstallCommand) {
 				UninstallParts();
 			}
 
