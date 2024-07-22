@@ -1,5 +1,5 @@
 <commands>
-	<command ID="Plaidman_ZoneLootList_Command_ShowItemList" DisplayText="Show Items List" Category="Mod: Zone Loot List" Layer="Adventure" Auto="Down">
+	<command ID="Plaidman_ZoneLootList_Command_ShowItemList" DisplayText="Show Area Items" Category="Mod: Zone Loot List" Layer="Adventure" Auto="Down">
 		<keyboardBind Modifier="shift" Key="g"/>
 	</command>
 	<command ID="Plaidman_ZoneLootList_Command_Uninstall" DisplayText="Uninstall Mod" Category="Mod: Zone Loot List" Layer="Adventure" Auto="Down"></command>

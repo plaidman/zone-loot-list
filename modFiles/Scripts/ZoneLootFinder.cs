@@ -35,7 +35,7 @@ namespace Plaidman.ZoneLootList.Parts {
 
 		private void RequireAbility() {
 			if (AbilityGuid == Guid.Empty) {
-				AbilityGuid = ParentObject.AddActivatedAbility("Item List", ItemListCommand, "Skill", Silent: true);
+				AbilityGuid = ParentObject.AddActivatedAbility("Show Area Items", ItemListCommand, "Skill", Silent: true);
 			}
 		}
 	
