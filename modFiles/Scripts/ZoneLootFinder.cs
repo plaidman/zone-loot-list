@@ -47,10 +47,11 @@ namespace Plaidman.ZoneLootList.Parts {
 
 		public override bool HandleEvent(AfterPlayerBodyChangeEvent e) {
             e.NewBody?.RequirePart<ZLL_ZoneLootFinder>();
-            e.OldBody?.RemovePart<ZLL_ZoneLootFinder>();
-
 			var part = e.NewBody.GetPart<ZLL_ZoneLootFinder>();
 			part.ToggleAbility();
+
+            e.OldBody?.RemovePart<ZLL_ZoneLootFinder>();
+
             return base.HandleEvent(e);
         }
 	
